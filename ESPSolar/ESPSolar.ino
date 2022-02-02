@@ -12,13 +12,16 @@ extern "C" {
 
 #define CONNECT_TIMEOUT 25 // / 2
 
-const char* ssid = "FoxNet 2.4";
-const char* password = "98345458";
+//const char* ssid = "FoxNet 2.4";
+//const char* password = "98345458";
+
+const char* ssid = "Pentagon_2.4G";
+const char* password = "17061998";
 
 //Your Domain name with URL path or IP address with path
 String serverName = "http://solarmonitor20.000webhostapp.com/";
 
-void initWifi() {
+void initWifi(bool onSetup = false) {
   WiFi.begin(ssid, password);
   bool success = true;
   int i = 0; 
@@ -27,14 +30,17 @@ void initWifi() {
     
     if(i >= CONNECT_TIMEOUT)
     {
-      Serial.print("Error 1^^");
+      if(onSetup == false)
+      {
+        Serial.print("Error 1^^");
+      }
       success = false;
       break;
     }
     i++;
   }
    
-  if(success == true)
+  if(success == true && onSetup == false)
     Serial.print("Connected^^");
 }
 
@@ -92,6 +98,7 @@ void light_sleep()
    delay(1000);
    
    // on Wakeup
+   //delay(500);
    Serial.print("Wakeup^^");
    initWifi();
 }
@@ -102,7 +109,7 @@ void setup() {
   gpio_init(); // Initilise GPIO pins
   //pinMode(2, INPUT_PULLUP);
   WiFi.mode(WIFI_STA);
-  initWifi();
+  initWifi(true);
 }
 
 void loop() {
